@@ -1,29 +1,43 @@
 import Phaser from 'phaser'
+import Level from '../models/Level'
+import Player from '../models/Player'
 import State from '../phaser/State'
+import Text from '../phaser/Text'
+import Tilemap from '../phaser/Tilemap'
 import Mushroom from '../sprites/Mushroom'
+import { Parameters } from '../config'
 
 export default class extends State {
+  init () {
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    this.initCursor();
+  }
+
+  initCursor (){
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.pointer = {x: 0, y: 0};
+  }
+
   create () {
-    let banner = this.add.text(this.game.world.centerX, this.game.height - 30, 'Phaser + ES6 + Webpack')
-    banner.font = 'Nunito'
-    banner.fontSize = 40
-    banner.fill = '#77BFA3'
-    banner.anchor.setTo(0.5)
+    this.level = new Level(this.game, {
+      tilemap : 'world-level1',
+      tilesets: [
+        {name: 'walkable', asset: 'tileset-walkable'},
+        {name: 'ground', asset: 'tileset-ground'}
+      ],
+      layers: ['walkables', 'ground'],
+      walkableLayer: 'walkables',
+      walkableTiles: [5]
+    });
 
-    this.mushroom = new Mushroom(this.game, {
-      x: this.game.world.centerX,
-      y: this.game.world.centerY,
-      asset: 'character-mushroom'
-    })
+    this.player = new Player(this.game, this.level);
 
-    //this.mushroom.setResponsiveWidth(30, this.world)
-    this.add.existing(this.mushroom)
+    this.mushroom = new Mushroom(this.game, { asset: 'object-mushroom', x: 0, y: 0 });
+    this.mushroom.scale.setTo(0.5, 0.5);
+    this.add.existing(this.mushroom);
   }
 
-  render () {
-
-  }
-
+  render () {}
   update () {
 
   }

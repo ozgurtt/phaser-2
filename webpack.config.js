@@ -57,7 +57,7 @@ module.exports = {
   ]),
   module: {
     loaders: [
-      //{ test: /\.(ico|jpe?g|png|gif)$/, loaders : ['img?minimize'] }, //'file?name=[path][name].[ext]'
+      { test: /\.(ico|jpe?g|png|gif)$/, loaders : ['img?minimize'] }, //'file?name=[path][name].[ext]'
       { test: /\.json$/, loader: 'json' },
       { test: /\.js$/, loader: 'babel', include: path.join(__dirname, 'src') },
       { test: /pixi\.js/, loader: 'expose?PIXI' },

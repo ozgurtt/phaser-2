@@ -1,15 +1,39 @@
+export let Parameters = {
+  world: {
+    width: 320,
+    height: 320,
+    tile: {
+      size: 32
+    }
+  }
+};
+
 export let Assets = {
-  font: {
+  font: false/*{
     google: {
-      families: ['Nunito']
+      families: []
+    }
+  }*/,
+  tilemap: {
+    world: {
+      level1: 'assets/tilemap/level1.json'
+    }
+  },
+  sprites: {
+    character: {
+      mushroom: {image: 'assets/sprites/mushroom.png', json: 'assets/sprites/mushroom.json'}
     }
   },
   image: {
-    character: {
-      'mushroom' : 'assets/images/mushroom.png'
+    object: {
+      mushroom : 'assets/images/mushroom.png'
+    },
+    tileset: {
+      walkable: 'assets/images/walkable.png',
+      ground: 'assets/images/ground.png'
     }
   },
   audio: {
     
   }
-}
+};
