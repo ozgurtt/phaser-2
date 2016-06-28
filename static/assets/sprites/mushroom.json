@@ -1,7 +1,7 @@
 {
   "frames": [
     {
-      "filename": "top",
+      "filename": "bottom",
       "frame": {
         "x": 0,
         "y": 0,
@@ -22,7 +22,7 @@
       }
     },
     {
-      "filename": "bottom",
+      "filename": "top",
       "frame": {
         "x": 0,
         "y": 65,
@@ -46,7 +46,7 @@
   "meta": {
     "app": "https://www.leshylabs.com/apps/sstool/",
     "version": "Leshy SpriteSheet Tool v0.8.4",
-    "image": "spritesheet.png",
+    "image": "mushroom.png",
     "size": {
       "w": 64,
       "h": 129

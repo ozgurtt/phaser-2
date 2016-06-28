@@ -1,6 +1,8 @@
 import 'pixi'
 import 'p2'
 import Phaser from 'phaser'
+import EasyStar from 'easystar'
+import 'easystar_phaser'
 
 import BootState from './states/Boot'
 import SplashState from './states/Splash'

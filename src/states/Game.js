@@ -1,10 +1,11 @@
 import Phaser from 'phaser'
 import Level from '../models/Level'
 import Player from '../models/Player'
+import Character from '../models/Character'
 import State from '../phaser/State'
 import Text from '../phaser/Text'
 import Tilemap from '../phaser/Tilemap'
-import Mushroom from '../sprites/Mushroom'
+import Mushroom from '../characters/Mushroom'
 import { Parameters } from '../config'
 
 export default class extends State {
@@ -29,16 +30,17 @@ export default class extends State {
       walkableLayer: 'walkables',
       walkableTiles: [5]
     });
+    //this.player = new Player(this.game, this.level);
 
-    this.player = new Player(this.game, this.level);
-
-    this.mushroom = new Mushroom(this.game, { asset: 'object-mushroom', x: 0, y: 0 });
+    this.mushroom = new Mushroom(this.game, this.level, { x: 0, y: 0 });
     this.mushroom.scale.setTo(0.5, 0.5);
     this.add.existing(this.mushroom);
   }
 
   render () {}
   update () {
-
+    if(this.input.activePointer.isDown){
+      this.mushroom.moveTo(this.input.activePointer.worldX, this.input.activePointer.worldY);
+    }
   }
 }

@@ -25,6 +25,8 @@
     "webpack": "^1.13.1"
   },
   "dependencies": {
-    "phaser": "^2.5.0"
+    "easystarjs": "^0.3.0",
+    "phaser": "^2.5.0",
+    "phaser_plugin_pathfinding": "git+ssh://git@github.com/appsbu-de/phaser_plugin_pathfinding.git"
   }
 }

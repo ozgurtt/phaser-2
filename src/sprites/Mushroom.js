@@ -1,4 +1,4 @@
-import Sprite from '../models/Character'
+import Sprite from '../phaser/Sprite'
 
 export default class extends Sprite {
 
