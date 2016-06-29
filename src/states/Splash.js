@@ -15,7 +15,7 @@ export default class extends State {
 
     for (let groupKey in Assets.sprites) {
       for(let assetKey in Assets.sprites[groupKey]) {
-        this.load.atlasJSONArray(`${groupKey}-${assetKey}`, Assets.sprites[groupKey][assetKey].image, Assets.sprites[groupKey][assetKey].json);
+        this.load.atlas(`${groupKey}-${assetKey}`, Assets.sprites[groupKey][assetKey].image, Assets.sprites[groupKey][assetKey].json);
       }
     }
 

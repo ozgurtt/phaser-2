@@ -3,13 +3,12 @@ import { Parameters } from '../config'
 
 export default class extends Sprite {
 
-  constructor (game, level, {x, y, asset, isCollisionEnabled = true}) {
+  constructor (game, level, {x, y, asset, isCollisionEnabled = false}) {
     super(game, {x, y, asset});
     this.level = level;
 
-    this.isMainPlayer = true;
-    this.moveDuration = 500;
-    this.info = {};
+    this.moveDuration = 400;
+
     this.currentTweens = [];
     this.moving = false;
     this.tweenInProgress = false;
@@ -24,6 +23,10 @@ export default class extends Sprite {
     for (var key in animations) {
       this.animations.add(key, animations[key]);
     }
+  }
+
+  setMoveDuration(moveDuration){
+    this.moveDuration = moveDuration;
   }
 
   moveTo (targetX, targetY, pathReadyCallback = (path) => {}, pathEndedCallback = () => {}) {
