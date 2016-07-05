@@ -34,14 +34,34 @@ export default class extends State {
     this.mushroom = new Mushroom(this.game, this.level, { x: 0, y: 0 });
     this.mushroom.scale.setTo(0.5, 0.5);
     this.add.existing(this.mushroom);
-    this.mushroom.animations.play('test', 6, true);
+
+    this.marker = this.game.add.graphics();
+    this.marker.lineStyle(0);
+    this.marker.beginFill(0x000000, 0.1);
+    this.marker.drawRect(0, 0, Parameters.world.tile.size, Parameters.world.tile.size);
+    this.marker.endFill();
+    this.marker.inputEnabled = true;
+    this.marker.events.onInputDown.add(() => {
+      if (!this.mushroom.moving) {
+        this.mushroom.moveTo(this.marker.x, this.marker.y);
+      }
+    });
   }
 
   render () {}
   update () {
-    var activePointers = this.player.getActivePointers();
+    let activePointers = this.player.getActivePointers();
+    let activeCursors = this.player.getActiveCursors();
 
-    if(Object.keys(activePointers).length > 0 && !this.player.pointer.isDown){
+    if (!this.mushroom.moving) {
+      let activeTile = this.level.getTile (this.game.input.activePointer.worldX, this.game.input.activePointer.worldY, true);
+      this.marker.x = activeTile.x;
+      this.marker.y = activeTile.y;
+      this.marker.visible = this.game.input.activePointer.withinGame;
+    }
+
+    // TROUVER UN AUTRE MOYEN QUE LE SETTIMEOUT
+    /*if(Object.keys(activePointers).length > 0 && !this.player.cursor.isDown && !this.mushroom.moving){
       console.log('-- POINTERS : ', activePointers);
       this.player.pointer.isDown = true;
       setTimeout(() => {this.player.pointer.isDown = false}, 500);
@@ -50,14 +70,15 @@ export default class extends State {
       this.mushroom.moveTo(pointer.worldX, pointer.worldY);
     }
 
-    var activeCursors = this.player.getActiveCursors();
     if(Object.keys(activeCursors).length > 0){
 
       if(!this.player.cursor.isDown){
         console.log('-- CURSORS : ', activeCursors);
+        clearTimeout(this.player.cursor.timeout);
+
         this.player.cursor.isDown = true;
-        setTimeout(() => {this.player.cursor.isDown = false}, 500);
+        this.player.cursor.timeout = setTimeout(() => {this.player.cursor.isDown = false}, 500);
       }
-    }
+    }*/
   }
 }

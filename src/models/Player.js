@@ -10,8 +10,6 @@ export default class {
   initInputs (keycodes, pointers = 2){
     this.keycodes = keycodes;
     this.cursors = this.game.input.keyboard.addKeys(this.keycodes);
-    this.pointer = {x: 0, y: 0, isDown: false};
-    this.cursor = {isDown: false};
 
     if(pointers > this.game.input.pointers.length){
       for (var i = this.game.input.pointers.length; i < pointers; i++) {
@@ -21,16 +19,19 @@ export default class {
   }
 
   getActivePointers () {
-    let activePointers = {};
+    let activePointerIds = {};
+    let activePointers = [];
 
     if (this.game.input.activePointer.isDown){
-      activePointers[this.game.input.activePointer.id] = this.game.input.activePointer;
+      activePointerIds[this.game.input.activePointer.id] = true;
+      activePointers.push(this.game.input.activePointer);
     }
 
     if (this.game.input.totalActivePointers > 0){
       this.game.input.pointers.forEach (function (pointer, index, pointers) {
-        if(pointer.isDown) {
-          activePointers[pointer.id] = pointer;
+        if(pointer.isDown && typeof activePointerIds[pointer.id] === 'undefined') {
+          activePointerIds[pointer.id] = true;
+          activePointers.push(pointer);
         }
       });
     }

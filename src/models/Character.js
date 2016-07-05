@@ -3,7 +3,7 @@ import { Parameters } from '../config'
 
 export default class extends Sprite {
 
-  constructor (game, level, {x, y, asset, isCollisionEnabled = false}) {
+  constructor (game, level, {x, y, asset, isCollisionEnabled = true}) {
     super(game, {x, y, asset});
     this.level = level;
 
@@ -25,8 +25,12 @@ export default class extends Sprite {
     }
   }
 
-  setMoveDuration(moveDuration){
+  setMoveDuration (moveDuration) {
     this.moveDuration = moveDuration;
+  }
+
+  play(key, duration, isLoop){
+    this.animations.play(key, duration, isLoop);
   }
 
   moveTo (targetX, targetY, pathReadyCallback = (path) => {}, pathEndedCallback = () => {}) {
@@ -38,7 +42,9 @@ export default class extends Sprite {
       (path) => {
         if(path !== null) {
           pathReadyCallback(path);
-          this.onReadyToMove(path, pathEndedCallback);
+          this.onReadyToMove(path, () => {
+            pathEndedCallback();
+          });
         }
       }
     );

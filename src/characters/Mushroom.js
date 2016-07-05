@@ -8,9 +8,6 @@ export default class extends Character {
     this.setupAnimations({
       test: ['bottom', 'top']
     });
-
-    //this.animations.play("test", 6, true);
-    //this.moveTo(9, 9);
   }
 
   update () {
