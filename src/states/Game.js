@@ -21,18 +21,17 @@ export default class extends State {
 
   create () {
     this.level = new Level(this.game, {
-      tilemap : 'world-level1',
+      tilemap : 'world-map',
       tilesets: [
         {name: 'walkable', asset: 'tileset-walkable'},
-        {name: 'ground', asset: 'tileset-ground'}
+        {name: 'tilesheet', asset: 'tileset-tilesheet'}
       ],
-      layers: ['walkables', 'ground'],
+      layers: ['walkables', 'ground', 'floor'],
       walkableLayer: 'walkables',
-      walkableTiles: [5]
+      walkableTiles: [1]
     });
 
     this.mushroom = new Mushroom(this.game, this.level, { x: 0, y: 0 });
-    this.mushroom.scale.setTo(0.5, 0.5);
     this.add.existing(this.mushroom);
 
     this.marker = this.game.add.graphics();

@@ -26,6 +26,7 @@ export default class {
     });
 
     this.walkableLayer = this.layers[walkableLayer];
+    this.walkableLayer.visible = false;
     this.walkableLayer.resizeWorld();
 
     this.pathfinder = this.game.plugins.add(Phaser.Plugin.PathFinderPlugin);

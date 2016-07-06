@@ -1,9 +1,9 @@
 export let Parameters = {
   world: {
-    width: 320,
-    height: 320,
+    width: 640,
+    height: 640,
     tile: {
-      size: 32
+      size: 64
     }
   }
 };
@@ -16,7 +16,7 @@ export let Assets = {
   }*/,
   tilemap: {
     world: {
-      level1: 'assets/tilemap/level1.json'
+      map: 'assets/tilemap/map.json'
     }
   },
   sprites: {
@@ -30,7 +30,7 @@ export let Assets = {
     },
     tileset: {
       walkable: 'assets/images/walkable.png',
-      ground: 'assets/images/ground.png'
+      tilesheet: 'assets/images/tilesheet.png'
     }
   },
   audio: {
