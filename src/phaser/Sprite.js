@@ -11,7 +11,4 @@ export default class extends Phaser.Sprite {
     this.width = parent.width / (100 / percent);
     this.height = this.texture.height - (this.texture.height * percentWidth / 100);
   }
-
-  centerSprite () { this.anchor.setTo(0.5); }
-  centerTile () { this.anchor.setTo(-0.5); }
 }

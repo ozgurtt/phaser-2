@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
+import i18next from 'i18next';
 import State from '../phaser/State';
 import Text from '../phaser/Text';
-import i18next from 'i18next';
 import { Assets } from '../assets';
 
 export default class extends State {
@@ -37,14 +37,6 @@ export default class extends State {
         this.load.audio(`${groupKey}-${assetKey}`, Assets.audio[groupKey][assetKey]);
       }
     }
-
-  }
-
-  create () {
-
-  }
-
-  update () {
 
   }
 

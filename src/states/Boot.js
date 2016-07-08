@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
-import State from '../phaser/State';
-import WebFont from 'webfontloader';
 import i18next from 'i18next';
+import WebFont from 'webfontloader';
+import State from '../phaser/State';
 import { Assets } from '../assets';
 import { translations_fr } from '../translations/fr';
 
@@ -36,7 +36,7 @@ export default class extends State {
 
   render () {
     if (this.fontsReady && this.translationsReady) {
-      this.state.start('Splash');
+      this.state.start('Loading');
     }
   }
 }

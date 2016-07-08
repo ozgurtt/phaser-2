@@ -1,12 +1,22 @@
 import Phaser from 'phaser';
+import i18next from 'i18next';
 import State from '../phaser/State';
 import Text from '../phaser/Text';
-import i18next from 'i18next';
+import Player from '../models/Player';
 import { Parameters } from '../parameters';
 
 export default class extends State {
   init (data = {}) {
     super.init(data);
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    this.data.player = new Player(this.game, {
+      'up': Phaser.KeyCode.UP,
+      'down': Phaser.KeyCode.DOWN,
+      'left': Phaser.KeyCode.LEFT,
+      'right': Phaser.KeyCode.RIGHT
+    });
+    this.data.level = [];
   }
 
   create () {
@@ -24,13 +34,7 @@ export default class extends State {
       textStart.fontSize = '42px';
     });
     textStart.events.onInputDown.add(() => {
-      this.state.start('Map', true, false, {});
+      this.state.start('Map', true, false, this.data);
     });
-
-  }
-
-  render () {}
-  update () {
-
   }
 }
