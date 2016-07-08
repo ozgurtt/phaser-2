@@ -2,8 +2,8 @@ import Phaser from 'phaser'
 
 export default class extends Phaser.Text {
 
-  constructor (game, {x, y, text}) {
-    super(game, x, y, text);
+  constructor (game, {x, y, text}, properties = {}) {
+    super(game, x, y, text, properties);
   }
 
   // Défini l'origine au centre

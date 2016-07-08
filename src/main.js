@@ -1,13 +1,14 @@
-import 'pixi'
-import 'p2'
-import Phaser from 'phaser'
-import EasyStar from 'easystar'
-import 'easystar_phaser'
+import 'pixi';
+import 'p2';
+import Phaser from 'phaser';
+import EasyStar from 'easystar';
+import 'easystar_phaser';
 
-import BootState from './states/Boot'
-import SplashState from './states/Splash'
-import GameState from './states/Game'
-import { Parameters } from './config';
+import BootState from './states/Boot';
+import SplashState from './states/Splash';
+import StartState from './states/Start';
+import MapState from './states/Map';
+import { Parameters } from './parameters';
 
 class Game extends Phaser.Game {
 
@@ -16,7 +17,8 @@ class Game extends Phaser.Game {
 
     this.state.add('Boot', BootState, false);
     this.state.add('Splash', SplashState, false);
-    this.state.add('Game', GameState, false);
+    this.state.add('Start', StartState, false);
+    this.state.add('Map', MapState, false);
 
     this.state.start('Boot')
   }

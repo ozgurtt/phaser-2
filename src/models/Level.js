@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import Tilemap from '../phaser/Tilemap'
-import { Parameters } from '../config'
+import { Parameters } from '../parameters'
 
 /*
     LEVEL

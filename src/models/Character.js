@@ -1,5 +1,5 @@
 import Sprite from '../phaser/Sprite'
-import { Parameters } from '../config'
+import { Parameters } from '../parameters'
 
 export default class extends Sprite {
 

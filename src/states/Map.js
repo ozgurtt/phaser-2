@@ -6,10 +6,12 @@ import State from '../phaser/State'
 import Text from '../phaser/Text'
 import Tilemap from '../phaser/Tilemap'
 import Mushroom from '../characters/Mushroom'
-import { Parameters } from '../config'
+import { Parameters } from '../parameters'
 
 export default class extends State {
-  init () {
+  init (data = {}) {
+    super.init(data);
+
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.player = new Player(this.game, {
       'up': Phaser.KeyCode.UP,
@@ -32,6 +34,8 @@ export default class extends State {
     });
 
     this.mushroom = new Mushroom(this.game, this.level, { x: 0, y: 0 });
+    this.mushroom.scale.setTo(0.5);
+    this.mushroom.anchor.setTo(-0.5);
     this.add.existing(this.mushroom);
 
     this.marker = this.game.add.graphics();
@@ -58,26 +62,5 @@ export default class extends State {
       this.marker.y = activeTile.y;
       this.marker.visible = this.game.input.activePointer.withinGame;
     }
-
-    // TROUVER UN AUTRE MOYEN QUE LE SETTIMEOUT
-    /*if(Object.keys(activePointers).length > 0 && !this.player.cursor.isDown && !this.mushroom.moving){
-      console.log('-- POINTERS : ', activePointers);
-      this.player.pointer.isDown = true;
-      setTimeout(() => {this.player.pointer.isDown = false}, 500);
-
-      var pointer = activePointers[Object.keys(activePointers)[0]];
-      this.mushroom.moveTo(pointer.worldX, pointer.worldY);
-    }
-
-    if(Object.keys(activeCursors).length > 0){
-
-      if(!this.player.cursor.isDown){
-        console.log('-- CURSORS : ', activeCursors);
-        clearTimeout(this.player.cursor.timeout);
-
-        this.player.cursor.isDown = true;
-        this.player.cursor.timeout = setTimeout(() => {this.player.cursor.isDown = false}, 500);
-      }
-    }*/
   }
 }

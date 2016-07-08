@@ -12,8 +12,6 @@ export default class extends Phaser.Sprite {
     this.height = this.texture.height - (this.texture.height * percentWidth / 100);
   }
 
-  // Défini l'origine au centre
-  center () {
-    this.anchor.setTo(0.5);
-  }
+  centerSprite () { this.anchor.setTo(0.5); }
+  centerTile () { this.anchor.setTo(-0.5); }
 }
