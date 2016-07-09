@@ -1,5 +1,5 @@
 import Sprite from '../phaser/Sprite'
-import { Parameters } from '../parameters'
+import { Parameters } from '../configuration/parameters'
 
 export default class extends Sprite {
 
@@ -7,7 +7,9 @@ export default class extends Sprite {
     super(game, {x, y, asset});
     this.level = level;
 
-    this.moveDuration = 400;
+    // Multiplication de la map pour gérer les tuiles blocables par coté
+    this.multiplier = 3;
+    this.moveDuration = 400 / this.multiplier;
 
     this.currentTweens = [];
     this.moving = false;
@@ -34,11 +36,12 @@ export default class extends Sprite {
   }
 
   moveTo (targetX, targetY, pathReadyCallback = (path) => {}, pathEndedCallback = () => {}) {
+    // Comme chaque zone de la grille est découpé en 9 on doit se baser sur les centres des tuiles
     this.level.calculatePath(
-      this.position.x,
-      this.position.y,
-      targetX,
-      targetY,
+      (this.position.x + Parameters.world.tile.size / 2) * this.multiplier,
+      (this.position.y + Parameters.world.tile.size / 2) * this.multiplier,
+      (targetX + Parameters.world.tile.size / 2) * this.multiplier,
+      (targetY + Parameters.world.tile.size / 2) * this.multiplier,
       (path) => {
         if(path !== null) {
           pathReadyCallback(path);
@@ -76,8 +79,9 @@ export default class extends Sprite {
   getTweenToCoordinate (x, y) {
     var tween = this.game.add.tween(this.position);
 
-    x = (x * Parameters.world.tile.size);
-    y = (y * Parameters.world.tile.size);
+    // On converti les positions modifiés en positions réel
+    x = ((x - 1) * Parameters.world.tile.size) / this.multiplier;
+    y = ((y - 1) * Parameters.world.tile.size) / this.multiplier;
     tween.to({ x:x, y:y }, this.moveDuration);
 
     return tween;

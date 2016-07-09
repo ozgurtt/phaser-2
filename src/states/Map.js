@@ -3,7 +3,8 @@ import i18next from 'i18next';
 import Level from '../models/Level';
 import State from '../phaser/State';
 import Mushroom from '../characters/Mushroom';
-import { Parameters } from '../parameters';
+import { Parameters } from '../configuration/parameters';
+import { Levels } from '../configuration/levels';
 
 export default class extends State {
   init (data = {}) {
@@ -11,23 +12,13 @@ export default class extends State {
   }
 
   create () {
-    this.data.level['map'] = new Level(this.game, {
-      tilemap : 'world-map',
-      tilesets: [
-        {name: 'walkable', asset: 'tileset-walkable'},
-        {name: 'tilesheet', asset: 'tileset-tilesheet'}
-      ],
-      layers: ['walkables', 'ground', 'floor', 'tall'],
-      walkableLayer: 'walkables',
-      walkableTiles: [1],
-      blockableTiles: [2]
-    });
+    this.data.levels['map'] = new Level(this.game, Levels['map']);
 
-    this.mushroom = new Mushroom(this.game, this.data.level['map'], { x: 0, y: 0 });
+    this.mushroom = new Mushroom(this.game, this.data.levels['map'], { x: 64, y: 64 });
     this.mushroom.scale.setTo(0.5);
     this.mushroom.anchor.setTo(-0.5);
 
-    this.data.level['map'].add(this.mushroom, 'tall');
+    this.data.levels['map'].add(this.mushroom, 'tall');
     
     this.game.camera.follow(this.mushroom);
     this.game.physics.enable(this.mushroom, Phaser.Physics.ARCADE);
@@ -56,10 +47,10 @@ export default class extends State {
     let activeCursors = this.data.player.getActiveCursors();
 
     // On définie les objets qui peuvent entrer en colision
-    this.game.physics.arcade.collide(this.mushroom, this.data.level['map'].walkableLayer);
+    this.game.physics.arcade.collide(this.mushroom, this.data.levels['map'].walkableLayer);
 
     if (!this.mushroom.moving) {
-      let activeTile = this.data.level['map'].getTile (this.game.input.activePointer.worldX, this.game.input.activePointer.worldY, true);
+      let activeTile = this.data.levels['map'].getTile (this.game.input.activePointer.worldX, this.game.input.activePointer.worldY, true);
       this.marker.x = activeTile.x;
       this.marker.y = activeTile.y;
       this.marker.visible = this.game.input.activePointer.withinGame;

@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import i18next from 'i18next';
 import WebFont from 'webfontloader';
 import State from '../phaser/State';
-import { Assets } from '../assets';
+import { Assets } from '../configuration/assets';
 import { translations_fr } from '../translations/fr';
 
 export default class extends State {
@@ -15,6 +15,7 @@ export default class extends State {
     this.scale.setUserScale(scale, scale, 0, 0);
     this.scale.pageAlignHorizontally = true;
     this.scale.pageAlignVeritcally = true;
+    this.game.stage.disableVisibilityChange = true;
   }
 
   preload () {

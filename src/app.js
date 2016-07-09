@@ -8,7 +8,7 @@ import BootState from './states/Boot';
 import LoadingState from './states/Loading';
 import StartState from './states/Start';
 import MapState from './states/Map';
-import { Parameters } from './parameters';
+import { Parameters } from './configuration/parameters';
 
 class Game extends Phaser.Game {
 

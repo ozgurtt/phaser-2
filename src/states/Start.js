@@ -3,7 +3,7 @@ import i18next from 'i18next';
 import State from '../phaser/State';
 import Text from '../phaser/Text';
 import Player from '../models/Player';
-import { Parameters } from '../parameters';
+import { Parameters } from '../configuration/parameters';
 
 export default class extends State {
   init (data = {}) {
@@ -16,7 +16,7 @@ export default class extends State {
       'left': Phaser.KeyCode.LEFT,
       'right': Phaser.KeyCode.RIGHT
     });
-    this.data.level = [];
+    this.data.levels = [];
   }
 
   create () {

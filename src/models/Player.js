@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import { Parameters } from '../parameters'
+import { Parameters } from '../configuration/parameters'
 
 export default class {
   constructor (game, keycodes, pointers = 2) {
