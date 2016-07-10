@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import Phaser from 'phaser';
 import i18next from 'i18next';
 import Level from '../models/Level';
 import State from '../phaser/State';
@@ -16,14 +16,18 @@ export default class extends State {
 
     this.mushroom = new Mushroom(this.game, this.data.levels['map'], { x: 64, y: 64 });
     this.mushroom.scale.setTo(0.5);
-    this.mushroom.anchor.setTo(-0.5);
+    //this.mushroom.anchor.setTo(-0.5);
 
-    this.data.levels['map'].add(this.mushroom, 'tall');
+    this.data.levels['map'].add(this.mushroom, 'floor1');
+    this.data.levels['map'].initPathfinder();
+    this.data.levels['map'].initCollisions();
+    this.data.levels['map'].walkableLayer.debug = true;
+    //this.add.existing(this.mushroom);
     
-    this.game.camera.follow(this.mushroom);
-    this.game.physics.enable(this.mushroom, Phaser.Physics.ARCADE);
+    this.mushroom.initCamera();
+    this.mushroom.initPhysics();
     this.mushroom.body.collideWorldBounds = true;
-    //this.mushroom.body.gravity.y = 10; 
+    //this.mushroom.body.gravity.y = 10;
 
     this.marker = this.game.add.graphics();
     this.marker.lineStyle(0);
@@ -32,9 +36,7 @@ export default class extends State {
     this.marker.endFill();
     this.marker.inputEnabled = true;
     this.marker.events.onInputDown.add(() => {
-      if (!this.mushroom.moving) {
-        this.mushroom.moveTo(this.marker.x, this.marker.y);
-      }
+      this.mushroom.moveTo(this.marker.x, this.marker.y);
     });
   }
 
@@ -49,11 +51,21 @@ export default class extends State {
     // On définie les objets qui peuvent entrer en colision
     this.game.physics.arcade.collide(this.mushroom, this.data.levels['map'].walkableLayer);
 
+    this.mushroom.body.velocity.x = 0;
+    this.mushroom.body.velocity.y = 0;
+
     if (!this.mushroom.moving) {
       let activeTile = this.data.levels['map'].getTile (this.game.input.activePointer.worldX, this.game.input.activePointer.worldY, true);
       this.marker.x = activeTile.x;
       this.marker.y = activeTile.y;
       this.marker.visible = this.game.input.activePointer.withinGame;
+
+      // @TODO Configure speed
+      if(this.data.player.cursors.up.isDown) this.mushroom.body.velocity.y = -100;
+      if(this.data.player.cursors.right.isDown) this.mushroom.body.velocity.x = 100;
+      if(this.data.player.cursors.down.isDown) this.mushroom.body.velocity.y = 100;
+      if(this.data.player.cursors.left.isDown) this.mushroom.body.velocity.x = -100;
     }
+
   }
 }

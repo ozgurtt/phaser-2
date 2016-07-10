@@ -7,105 +7,56 @@ import { Parameters } from '../configuration/parameters'
     Gestion de tout ce qui est en lien avec les tilesets, layers, pathfinding
  */
 export default class {
-  constructor (game, {tilemap, tilesets, layers, walkableLayer, collisions}) {
+  constructor (game, {tilemap, tilesets, layers, walkableLayer, walkableTiles, collisions}) {
     this.game = game;
     this.map = new Tilemap(this.game, tilemap);
     this.layers = {};
-    this.walkableLayer = walkableLayer;
+    this.walkableTiles = walkableTiles;
+    this.collisions = collisions;
     
     tilesets.forEach((tileset) => {
       this.map.addTilesetImage(tileset.name, tileset.asset);
     });
 
-    var i = 0, walkableLayerIndex = 0;
     layers.forEach ((layer) => {
       this.layers[layer] = this.map.createLayer(layer);
     });
 
     this.walkableLayer = this.layers[walkableLayer];
-    this.walkableLayer.visible = false;
+    //this.walkableLayer.visible = false;
     this.walkableLayer.resizeWorld();
-
-    // On définie sur quelles tuiles les colisions vont être détecté
-    //this.map.setCollision(collisions.full, true, this.walkableLayer);
-    this.initPathfinder(walkableLayer, collisions)
   }
 
-  // On multiplie la grille par 3 pour gérer les blocages des tuiles sur uniquement quelques cotés
-  initPathfinder (layer, collisions_tiles) {
-    let data = this.map.layers[this.layers[layer].index].data;
+  initPathfinder () {
+    this.pathfinder = this.game.plugins.add(Phaser.Plugin.PathFinderPlugin);
+    //@TODO this.pathfinder.enableDiagonals();
+    this.pathfinder.setGrid(this.map.layers[this.walkableLayer.index].data, this.walkableTiles);
+  }
 
-    let m = [];
-    for (let y = 0; y < data.length; y++) {
-      let r = [];
-      for (let x = 0; x < data[y].length; x++) {
-        let i = data[y][x].index;
+  initCollisions () {
+    //@TODO A tester
+    // On définie sur quelles tuiles les colisions vont être détecté
+    //this.map.setCollision([2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], true, this.walkableLayer);
+    //this.map.setCollision([16], true, this.walkableLayer);
+    //this.map.setCollisionBetween(2, 16, true, this.walkableLayer);
 
-        let collisions = collisions_tiles[i];
-        let p = [
-          [1, 0, 1],
-          [0, 0, 0],
-          [1, 0, 1]
-        ];
-
-        for (let z = 0; z < collisions.length; z++) {
-          switch (collisions[z]) {
-            case 't': p[0][0] = 1; p[0][1] = 1; p[0][2] = 1; break;
-            case 'r': p[0][2] = 1; p[1][2] = 1; p[2][2] = 1; break;
-            case 'b': p[2][0] = 1; p[2][1] = 1; p[2][2] = 1; break;
-            case 'l': p[0][0] = 1; p[1][0] = 1; p[2][0] = 1; break;
+    let m = this.map.layers[this.walkableLayer.index].data;
+    for (let y = 0; y < m.length; y++) {
+      for (let x = 0; x < m[y].length; x++) {
+        let t = m[y][x];
+        if (typeof this.collisions[t.index] !== 'undefined') {
+          for (let z = 0; z < this.collisions[t.index].length; z++) {
+            switch (this.collisions[t.index][z]) {
+              case 't': t.collideUp = t.faceTop = true; break;
+              case 'r': t.collideRight = t.faceRight = true; break;
+              case 'b': t.collideDown = t.faceBottom = true; break;
+              case 'l': t.collideLeft = t.faceLeft = true; break;
+            }
           }
         }
-        r.push(p);
       }
-      m.push(r);
     }
-
-    let tab = [];
-    for (let y = 0; y < m.length * m[0][0].length; y++) {
-      let row = [];
-      for (let x = 0; x < m[0].length * m[0][0][0].length; x++)
-        row.push(0);
-      tab.push(row);
-    }
-
-    for (let y = 0; y < m.length; y++)
-      for (let x = 0; x < m[y].length; x++)
-        for (let j = 0; j < m[y][x].length; j++)
-          for (let i = 0; i < m[y][x][j].length; i++)
-            tab[y * m[0][0].length + j][x * m[0][0][0].length + i] = {index: m[y][x][j][i]};
-
-    this.pathfinder = this.game.plugins.add(Phaser.Plugin.PathFinderPlugin);
-    this.pathfinder.setGrid(tab, [0]);
-    //this.pathfinder.setGrid(this.map.layers[this.layers[layer].index].data, [1]);
   }
-
-  /*setCollisions (layer, tiles = [], directions = {}) {
-    let d = this.map.layers[this.layers[layer].index].data;
-    directions = {
-      top: typeof directions !== 'undefined' ? directions.top : false,
-      bottom: typeof directions !== 'undefined' ? directions.bottom : false,
-      left: typeof directions !== 'undefined' ? directions.left : false,
-      right: typeof directions !== 'undefined' ? directions.right : false
-    };
-
-    for (var i = 0; i < d.length; i++) {
-      for (var j = 0; j < d[i].length; j++) {
-        let t = d[i][j];
-        if (tiles.indexOf(t.index) > -1) {
-          t.collideUp = directions.top;
-          t.collideDown = directions.bottom;
-          t.collideLeft = directions.left;
-          t.collideRight = directions.right;
-
-          t.faceTop = directions.top;
-          t.faceBottom = directions.bottom;
-          t.faceLeft = directions.left;
-          t.faceRight = directions.right;
-        }
-      }
-    }
-  }*/
 
   calculatePath (fromX, fromY, toX, toY, onPathReadyCallback = (path) => {}) {
     let fromTile = this.getTile(fromX, fromY);

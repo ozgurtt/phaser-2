@@ -3,7 +3,7 @@ export let Parameters = {
     width: 640,
     height: 640,
     tile: {
-      size: 64
+      size: 32
     }
   }
 };

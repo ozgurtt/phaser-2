@@ -1,3 +1,4 @@
+import Phaser from 'phaser';
 import Sprite from '../phaser/Sprite'
 import { Parameters } from '../configuration/parameters'
 
@@ -5,11 +6,10 @@ export default class extends Sprite {
 
   constructor (game, level, {x, y, asset, isCollisionEnabled = true}) {
     super(game, {x, y, asset});
+    this.game = game;
     this.level = level;
 
-    // Multiplication de la map pour gérer les tuiles blocables par coté
-    this.multiplier = 3;
-    this.moveDuration = 400 / this.multiplier;
+    this.moveDuration = 400;
 
     this.currentTweens = [];
     this.moving = false;
@@ -19,6 +19,14 @@ export default class extends Sprite {
       this.game.physics.enable(this);
       this.body.fixedRotation = true;
     }
+  }
+
+  initPhysics () {
+    this.game.physics.enable(this, Phaser.Physics.ARCADE);
+  }
+
+  initCamera () {
+    this.game.camera.follow(this);
   }
 
   setupAnimations (animations) {
@@ -36,12 +44,11 @@ export default class extends Sprite {
   }
 
   moveTo (targetX, targetY, pathReadyCallback = (path) => {}, pathEndedCallback = () => {}) {
-    // Comme chaque zone de la grille est découpé en 9 on doit se baser sur les centres des tuiles
     this.level.calculatePath(
-      (this.position.x + Parameters.world.tile.size / 2) * this.multiplier,
-      (this.position.y + Parameters.world.tile.size / 2) * this.multiplier,
-      (targetX + Parameters.world.tile.size / 2) * this.multiplier,
-      (targetY + Parameters.world.tile.size / 2) * this.multiplier,
+      this.position.x,
+      this.position.y,
+      targetX,
+      targetY,
       (path) => {
         if(path !== null) {
           pathReadyCallback(path);
@@ -79,9 +86,8 @@ export default class extends Sprite {
   getTweenToCoordinate (x, y) {
     var tween = this.game.add.tween(this.position);
 
-    // On converti les positions modifiés en positions réel
-    x = ((x - 1) * Parameters.world.tile.size) / this.multiplier;
-    y = ((y - 1) * Parameters.world.tile.size) / this.multiplier;
+    x = x * Parameters.world.tile.size;
+    y = y * Parameters.world.tile.size;
     tween.to({ x:x, y:y }, this.moveDuration);
 
     return tween;
