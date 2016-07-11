@@ -1,15 +1,14 @@
 import Phaser from 'phaser';
-import Sprite from '../phaser/Sprite'
+import Sprite from '../phaser/Sprite';
 import { Parameters } from '../configuration/parameters'
 
 export default class extends Sprite {
-
-  constructor (game, level, {x, y, asset, isCollisionEnabled = true}) {
-    super(game, {x, y, asset});
+  constructor (game, level, {x, y, asset, isCollisionEnabled = true, speed = 100}) {
+    super(game, {x: x * Parameters.world.tile.size, y: y * Parameters.world.tile.size, asset});
     this.game = game;
     this.level = level;
 
-    this.moveDuration = 400;
+    this.setSpeed(speed);
 
     this.currentTweens = [];
     this.moving = false;
@@ -35,12 +34,27 @@ export default class extends Sprite {
     }
   }
 
-  setMoveDuration (moveDuration) {
-    this.moveDuration = moveDuration;
-  }
-
   play(key, duration, isLoop){
     this.animations.play(key, duration, isLoop);
+  }
+
+  setSpeed (speed) {
+    this.speed = speed;
+    this.moveDuration = 300 * 100 / speed;
+  }
+
+  stop () {
+    this.body.velocity.x = 0;
+    this.body.velocity.y = 0;
+  }
+
+  move (direction) {
+    switch (direction) {
+      case 'up': this.body.velocity.y = - this.speed; break;
+      case 'right': this.body.velocity.x = this.speed; break;
+      case 'down': this.body.velocity.y = this.speed; break;
+      case 'left': this.body.velocity.x = - this.speed; break;
+    }
   }
 
   moveTo (targetX, targetY, pathReadyCallback = (path) => {}, pathEndedCallback = () => {}) {
@@ -95,6 +109,7 @@ export default class extends Sprite {
 
   moveInPath (pathEndedCallback = () => {}) {
     if(this.currentTweens.length === 0){ return; }
+
     var index = 1;
     this.moving = true;
 
@@ -143,5 +158,9 @@ export default class extends Sprite {
         //this.sprite.walkUp();
       }
     }
+  }
+
+  getTiles (isCoordinate = false) {
+    return this.level.getTiles(this, isCoordinate);
   }
 }

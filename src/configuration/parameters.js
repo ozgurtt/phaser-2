@@ -1,3 +1,5 @@
+import Mushroom from '../characters/Mushroom';
+
 export let Parameters = {
   world: {
     width: 640,
@@ -5,5 +7,8 @@ export let Parameters = {
     tile: {
       size: 32
     }
+  },
+  characters: {
+    Mushroom
   }
 };

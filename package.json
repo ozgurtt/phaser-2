@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "easystarjs": "^0.3.0",
-    "phaser": "^2.5.0",
+    "phaser": "^2.6.1",
     "phaser_plugin_pathfinding": "git+ssh://git@github.com/appsbu-de/phaser_plugin_pathfinding.git"
   }
 }

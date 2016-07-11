@@ -14,9 +14,10 @@ export default class extends State {
       'up': Phaser.KeyCode.UP,
       'down': Phaser.KeyCode.DOWN,
       'left': Phaser.KeyCode.LEFT,
-      'right': Phaser.KeyCode.RIGHT
+      'right': Phaser.KeyCode.RIGHT,
+      'space': Phaser.KeyCode.SPACEBAR
     });
-    this.data.levels = [];
+    this.data.city = false;
   }
 
   create () {
@@ -33,8 +34,20 @@ export default class extends State {
     textStart.events.onInputOut.add(() => {
       textStart.fontSize = '42px';
     });
-    textStart.events.onInputDown.add(() => {
-      this.state.start('Map', true, false, this.data);
-    });
+    textStart.events.onInputDown.add(() => { this.startMap(); });
+
+    this.game.input.keyboard.onDownCallback = (e) => {
+      if (e.keyCode == Phaser.Keyboard.SPACEBAR) {
+        this.startMap();
+      }
+    }
+  }
+
+  startMap () {
+    this.state.start('Map', true, false, this.data);
+  }
+
+  update () {
+
   }
 }

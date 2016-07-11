@@ -43,25 +43,43 @@
          "width":20,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":20,
+         "name":"cities",
+         "objects":[
+                {
+                 "height":32,
+                 "id":9,
+                 "name":"city1",
+                 "properties":
+                    {
+                     "city":1
+                    },
+                 "propertytypes":
+                    {
+                     "city":"int"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":64,
+                 "x":288,
+                 "y":320
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":20,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":1,
+ "nextobjectid":12,
  "orientation":"orthogonal",
  "renderorder":"left-up",
  "tileheight":32,
  "tilesets":[
-        {
-         "columns":5,
-         "firstgid":481,
-         "image":"walkable.png",
-         "imageheight":128,
-         "imagewidth":160,
-         "margin":0,
-         "name":"walkable",
-         "spacing":0,
-         "tilecount":20,
-         "tileheight":32,
-         "tilewidth":32
-        },
         {
          "columns":30,
          "firstgid":1,
@@ -72,6 +90,19 @@
          "name":"tilesheet",
          "spacing":0,
          "tilecount":480,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "columns":5,
+         "firstgid":481,
+         "image":"walkable.png",
+         "imageheight":128,
+         "imagewidth":160,
+         "margin":0,
+         "name":"walkable",
+         "spacing":0,
+         "tilecount":20,
          "tileheight":32,
          "tilewidth":32
         }],

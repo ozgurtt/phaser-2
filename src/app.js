@@ -8,6 +8,7 @@ import BootState from './states/Boot';
 import LoadingState from './states/Loading';
 import StartState from './states/Start';
 import MapState from './states/Map';
+import CityState from './states/City';
 import { Parameters } from './configuration/parameters';
 
 class Game extends Phaser.Game {
@@ -19,6 +20,7 @@ class Game extends Phaser.Game {
     this.state.add('Loading', LoadingState, false);
     this.state.add('Start', StartState, false);
     this.state.add('Map', MapState, false);
+    this.state.add('City', CityState, false);
 
     this.state.start('Boot')
   }
