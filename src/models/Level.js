@@ -53,7 +53,7 @@ export default class {
   
   debugCollisions () {
     this.walkableLayer.visible = true;
-    this.data.levels['map'].walkableLayer.debug = true;
+    this.walkableLayer.debug = true;
   }
 
   calculatePath (fromX, fromY, toX, toY, onPathReadyCallback = (path) => {}) {

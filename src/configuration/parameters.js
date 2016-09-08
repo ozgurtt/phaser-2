@@ -1,14 +1,16 @@
-import Mushroom from '../characters/Mushroom';
+import Human from '../characters/Human';
+import Cthulhu from '../characters/Cthulhu';
 
 export let Parameters = {
   world: {
-    width: 640,
-    height: 640,
+    width: 960,
+    height: 540,
     tile: {
-      size: 32
+      size: 128
     }
   },
   characters: {
-    Mushroom
+    Human,
+    Cthulhu,
   }
 };

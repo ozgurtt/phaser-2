@@ -34,13 +34,16 @@ export default class extends Sprite {
     }
   }
 
-  play(key, duration, isLoop){
+  play(key, duration, isLoop = false){
+    if(typeof duration == 'undefined') duration = this.animDuration;
+
     this.animations.play(key, duration, isLoop);
   }
 
   setSpeed (speed) {
-    this.speed = speed;
-    this.moveDuration = 300 * 100 / speed;
+    this.moveSpeed = speed; // 100
+    this.moveDuration = 300 * 100 / speed; // 300
+    this.animDuration = speed / 10; // 10
   }
 
   stop () {
@@ -50,10 +53,10 @@ export default class extends Sprite {
 
   move (direction) {
     switch (direction) {
-      case 'up': this.body.velocity.y = - this.speed; break;
-      case 'right': this.body.velocity.x = this.speed; break;
-      case 'down': this.body.velocity.y = this.speed; break;
-      case 'left': this.body.velocity.x = - this.speed; break;
+      case 'up': this.body.velocity.y = - this.moveSpeed; break;
+      case 'right': this.body.velocity.x = this.moveSpeed; break;
+      case 'down': this.body.velocity.y = this.moveSpeed; break;
+      case 'left': this.body.velocity.x = - this.moveSpeed; break;
     }
   }
 
@@ -110,12 +113,14 @@ export default class extends Sprite {
   moveInPath (pathEndedCallback = () => {}) {
     if(this.currentTweens.length === 0){ return; }
 
-    var index = 1;
+    let index = 1;
+    let direction;
     this.moving = true;
 
     let moveToNext = (tween) => {
       index ++;
       var nextTween = this.currentTweens[index];
+
       if(nextTween != null){
         tween.onComplete.add(() => {
           this.tweenInProgress = false;
@@ -126,12 +131,14 @@ export default class extends Sprite {
         // if i am the last tween
         tween.onComplete.add(() => {
           this.resetCurrentTweens();
+          this.play('stop_' + direction, 0, false);
           pathEndedCallback();
         });
       }
 
       tween.start();
-      this.faceNextTile(tween);
+      direction = this.getTweenDirection(tween); 
+      this.play('walk_' + direction, this.animDuration, true);
 
       this.tweenInProgress = true;
     }
@@ -139,25 +146,11 @@ export default class extends Sprite {
     moveToNext(this.currentTweens[index]);
   }
 
-  faceNextTile (tween) {
+  getTweenDirection (tween) {
     var isVerticalMovement = tween.properties.y == this.position.y;
-
-    if(isVerticalMovement) {
-      if(tween.properties.x & this.position.x){
-        //this.sprite.walkRight();
-      }
-      else {
-        //this.sprite.walkLeft();
-      }
-    }
-    else {
-      if(tween.properties.y & this.position.y){
-        //this.sprite.walkDown();
-      }
-      else {
-        //this.sprite.walkUp();
-      }
-    }
+    if(isVerticalMovement)
+          return tween.properties.x > this.position.x ? 'right' : 'left';
+    else  return tween.properties.y > this.position.y ? 'down' : 'up';
   }
 
   getTiles (isCoordinate = false) {

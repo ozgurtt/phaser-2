@@ -1,33 +1,26 @@
 import Phaser from 'phaser';
-import i18next from 'i18next';
 import State from '../phaser/State';
-import Character from '../models/Character';
+import Level from '../models/Level';
+import { Levels } from '../configuration/levels';
 import { Parameters } from '../configuration/parameters';
 
 export default class extends State {
   init (data = {}) {
     super.init(data);
-
-    this.level = 'map';
   }
 
   create () {
-    this.initLevel('map');
+    this.level = new Level (this.game, Levels['map']);
 
-    console.log(Character);
-
-    this.characters['player'] = new Parameters.characters['Mushroom'](this.game, this.level, {x: 2, y: 2});
-    this.characters['player'].scale.setTo (0.5);
+    this.characters['player'] = new Parameters.characters['Cthulhu'](this.game, this.level, {x: 2, y: 2});
     this.characters['player'].initCamera ();
     this.characters['player'].initPhysics ();
     this.characters['player'].body.collideWorldBounds = true;
-    //this.characters['player'].anchor.setTo(-0.5);
-    //this.characters['player'].body.gravity.y = 10;
+    this.characters['player'].play('walk_up', 5, true);
 
     this.level.add (this.characters['player'], 'floor1');
     this.level.initPathfinder ();
     this.level.initCollisions ();
-
 
     this.marker = this.game.add.graphics ();
     this.marker.lineStyle (0);
@@ -45,7 +38,7 @@ export default class extends State {
         console.log ('-- CITY : ', city);
 
         if(this.level.getNearObject('cities', this.characters['player']) !== false) {
-          this.startCity(city);
+
         }
       }
     });
@@ -54,17 +47,13 @@ export default class extends State {
       if (e.keyCode == Phaser.Keyboard.SPACEBAR) {
         let city = this.level.getNearObject('cities', this.characters['player'])
         if(city !== false){
-          this.startCity(city);
+
         }
       }
     }
-  }
 
-  startCity (city) {
-    this.data.city = city;
-    this.state.start('City', true, false, this.data);
+    this.cursors = this.input.keyboard.createCursorKeys();
   }
-
 
   render () {
 
@@ -87,12 +76,19 @@ export default class extends State {
     }
 
     if(activeCursors.length > 0){
-      this.characters['player'].resetCurrentTweens();
+      /*this.characters['player'].setSpeed(100);*/
+      var cameraSpeed = 1.9;
 
+      this.characters['player'].resetCurrentTweens();
       if (this.data.player.cursors.up.isDown) this.characters['player'].move('up');
       if (this.data.player.cursors.right.isDown) this.characters['player'].move('right');
       if (this.data.player.cursors.down.isDown) this.characters['player'].move('down');
       if (this.data.player.cursors.left.isDown) this.characters['player'].move('left');
     }
+
+    /*if (this.cursors.up.isDown) this.camera.y -= cameraSpeed;
+     if (this.cursors.right.isDown) this.camera.x += cameraSpeed;
+     if (this.cursors.down.isDown) this.camera.y += cameraSpeed;
+     if (this.cursors.left.isDown) this.camera.x -= cameraSpeed;*/
   }
 }

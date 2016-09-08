@@ -2,29 +2,30 @@ export let Levels = {
   map: {
     tilemap : 'world-map',
     tilesets: [
-      {name: 'walkable', asset: 'tileset-walkable'},
-      {name: 'tilesheet', asset: 'tileset-tilesheet'}
+      {name: 'walkable', asset: 'tilesheet-walkable'},
+      {name: 'top', asset: 'tilesheet-top'},
+      {name: 'exa', asset: 'tilesheet-exa'}
     ],
     layers: ['ground', 'floor0', 'floor1', 'walkable'],
     walkableLayer: 'walkable',
-    walkableTiles: [481],
+    walkableTiles: [1],
     collisions: {
-      481: [],
-      482: ['t'],
-      483: ['r'],
-      484: ['b'],
-      485: ['l'],
-      486: ['t','r','b','l'],
-      487: ['t','r'],
-      488: ['r','b'],
-      489: ['b','l'],
-      490: ['l','t'],
-      491: ['t','b'],
-      492: ['t','r','b'],
-      493: ['r','b','l'],
-      494: ['b','l','t'],
-      495: ['l','t','r'],
-      496: ['r','l']
+      1: [],
+      2: ['t','r','b','l'],
+      3: ['t','b'],
+      4: ['r','l'],
+      5: ['t'],
+      6: ['r'],
+      7: ['b'],
+      8: ['l'],
+      9: ['t','r'],
+      10: ['r','b'],
+      11: ['b','l'],
+      12: ['l','t'],
+      13: ['t','r','b'],
+      14: ['r','b','l'],
+      15: ['b','l','t'],
+      16: ['l','t','r'],
     }
   }
 };

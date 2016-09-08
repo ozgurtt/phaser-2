@@ -1,26 +1,28 @@
 export let Assets = {
-  font: false/*{
+  font: {
     google: {
-      families: []
+      families: ['Roboto']
     }
-  }*/,
-  tilemap: {
+  },
+  tilemaps: {
     world: {
-      map: 'assets/tilemap/map.json'
+      map: 'assets/tilemap/map.json',
     }
   },
   sprites: {
     character: {
-      mushroom: {image: 'assets/sprites/mushroom.png', json: 'assets/sprites/mushroom.json'}
+      human: {image: 'assets/sprites/human.png', json: 'assets/sprites/human.json'},
+      cthulhu: {image: 'assets/sprites/cthulhu.png', json: 'assets/sprites/cthulhu.json'}
     }
   },
   image: {
     object: {
       mushroom : 'assets/images/mushroom.png'
     },
-    tileset: {
-      walkable: 'assets/images/walkable.png',
-      tilesheet: 'assets/images/tilesheet.png'
+    tilesheet: {
+      walkable: 'assets/tilemap/tilesheetWalkable.png',
+      top: 'assets/tilemap/tilesheetTop.png',
+      exa: 'assets/tilemap/tilesheetExa.png'
     }
   },
   audio: {

@@ -14,9 +14,9 @@ export default class extends State {
     this.load.onFileComplete.add(this.progress, this);
     this.load.onLoadComplete.add(this.loaded, this);
 
-    for (let groupKey in Assets.tilemap) {
-      for(let assetKey in Assets.tilemap[groupKey]) {
-        this.load.tilemap(`${groupKey}-${assetKey}`, Assets.tilemap[groupKey][assetKey], null, Phaser.Tilemap.TILED_JSON);
+    for (let groupKey in Assets.tilemaps) {
+      for(let assetKey in Assets.tilemaps[groupKey]) {
+        this.load.tilemap(`${groupKey}-${assetKey}`, Assets.tilemaps[groupKey][assetKey], null, Phaser.Tilemap.TILED_JSON);
       }
     }
 
