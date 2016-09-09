@@ -106,7 +106,7 @@
       }
     },
     {
-      "filename": "walk_top_1",
+      "filename": "walk_up_1",
       "frame": {
         "x": 128,
         "y": 128,
@@ -190,7 +190,7 @@
       }
     },
     {
-      "filename": "walk_top_2",
+      "filename": "walk_up_2",
       "frame": {
         "x": 128,
         "y": 256,

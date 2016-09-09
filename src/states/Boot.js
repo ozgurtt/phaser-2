@@ -16,6 +16,11 @@ export default class extends State {
     this.scale.pageAlignHorizontally = true;
     this.scale.pageAlignVeritcally = true;
     this.game.stage.disableVisibilityChange = true;
+    //this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
+    // Optimisation mobile
+    this.game.renderer.renderSession.roundPixels = true;
+    this.game.time.desiredFps = 30;
   }
 
   preload () {

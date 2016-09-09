@@ -3,10 +3,11 @@ import Sprite from '../phaser/Sprite';
 import { Parameters } from '../configuration/parameters'
 
 export default class extends Sprite {
-  constructor (game, level, {x, y, asset, isCollisionEnabled = true, speed = 100}) {
+  constructor (game, level, {layer, x, y, asset, isCollisionEnabled = true, speed = 60}) {
     super(game, {x: x * Parameters.world.tile.size, y: y * Parameters.world.tile.size, asset});
     this.game = game;
     this.level = level;
+    if(layer) this.level.add (this, layer);
 
     this.setSpeed(speed);
 
@@ -22,6 +23,10 @@ export default class extends Sprite {
 
   initPhysics () {
     this.game.physics.enable(this, Phaser.Physics.ARCADE);
+  }
+
+  initCollisions () {
+    this.body.collideWorldBounds = true;
   }
 
   initCamera () {
@@ -41,9 +46,9 @@ export default class extends Sprite {
   }
 
   setSpeed (speed) {
-    this.moveSpeed = speed; // 100
-    this.moveDuration = 300 * 100 / speed; // 300
-    this.animDuration = speed / 10; // 10
+    this.moveSpeed = speed; // 60
+    this.moveDuration = 300 * 100 / speed; // 500
+    this.animDuration = speed / 5; // 12
   }
 
   stop () {
@@ -137,7 +142,7 @@ export default class extends Sprite {
       }
 
       tween.start();
-      direction = this.getTweenDirection(tween); 
+      direction = this.getTweenDirection(tween);
       this.play('walk_' + direction, this.animDuration, true);
 
       this.tweenInProgress = true;
