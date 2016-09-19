@@ -2,7 +2,9 @@ import 'pixi';
 import 'p2';
 import Phaser from 'phaser';
 import EasyStar from 'easystar';
-import 'easystar_phaser';
+import 'phaser_easystar';
+import 'phaser_kinecticscrolling';
+import 'hammerjs';
 
 import BootState from './states/Boot';
 import LoadingState from './states/Loading';
@@ -14,7 +16,7 @@ import { Parameters } from './configuration/parameters';
 class Game extends Phaser.Game {
 
   constructor () {
-    super(Parameters.world.width, Parameters.world.height, Phaser.AUTO, 'content', null, true);
+    super(window.innerWidth, window.innerHeight, Phaser.AUTO, Parameters.dom.id, null, true);
 
     this.state.add('Boot', BootState, false);
     this.state.add('Loading', LoadingState, false);

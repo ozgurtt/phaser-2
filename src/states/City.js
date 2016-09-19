@@ -4,7 +4,8 @@ import Level from '../models/Level';
 import State from '../phaser/State';
 
 export default class extends State {
-  init (data = {}) {
+  init (data = null) {
+    data.state = 'City';
     super.init(data);
   }
 

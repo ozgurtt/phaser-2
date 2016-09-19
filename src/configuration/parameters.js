@@ -1,12 +1,11 @@
 export let Parameters = {
-  world: {
-    width: 960,
-    height: 540,
-    tile: {
-      size: 128
-    },
-    camera: {
-      speed: 6
-    }
+  dom : {
+    id: 'content'
+  },
+  camera: {
+    speed: 6
+  },
+  storage: {
+    key: 'cthulhu-cratie'
   }
 };

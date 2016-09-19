@@ -7,29 +7,48 @@ import { Parameters } from '../configuration/parameters';
     Gestion de tout ce qui est en lien avec les tilesets, layers, pathfinding
  */
 export default class {
-  constructor (game, {tilemap, tilesets, layers, walkableLayer, walkableTiles, collisions}) {
+  constructor (game, {tilesize, tilemap, tilesets, layers, walkableLayer, walkableTiles, collisions}) {
     this.game = game;
     this.map = new Tilemap(this.game, tilemap);
     this.layers = {};
     this.walkableTiles = walkableTiles;
     this.collisions = collisions;
-    
+    this.tilesize = tilesize;
+    this.scale = 1;
+
     tilesets.forEach((tileset) => {
       this.map.addTilesetImage(tileset.name, tileset.asset);
     });
 
-    layers.forEach ((layer) => {
-      this.layers[layer] = this.map.createLayer(layer);
+    layers.forEach ((layerName) => {
+      let layer = this.map.createLayer(layerName);
+      this.layers[layerName] = layer;
     });
 
     this.walkableLayer = this.layers[walkableLayer];
     this.walkableLayer.visible = false;
     this.walkableLayer.resizeWorld();
+
+    this.groupLayers = this.game.add.group();
+    this.groupCharacters = this.game.add.group();
+
+    for(let i in this.layers){
+      this.groupLayers.add(this.layers[i]);
+    }
+
+    window.addEventListener('resize', () => { this.onResize(); });
+  }
+
+  onResize () {
+    this.game.paused = true;
+    for(var i in this.layers){
+      this.layers[i].resize(window.innerWidth, window.innerHeight);
+    }
+    this.game.paused = false;
   }
 
   initPathfinder () {
-    this.pathfinder = this.game.plugins.add(Phaser.Plugin.PathFinderPlugin);
-    this.pathfinder.setGrid(this.map.layers[this.walkableLayer.index].data, this.walkableTiles);
+    this.game.pathfinder.setGrid(this.map.layers[this.walkableLayer.index].data, this.walkableTiles);
   }
 
   initCollisions () {
@@ -60,14 +79,13 @@ export default class {
     let fromTile = this.getTile(fromX, fromY);
     let toTile = this.getTile(toX, toY);
 
-    this.pathfinder.setCallbackFunction (onPathReadyCallback);
-    this.pathfinder.preparePathCalculation ([fromTile.x, fromTile.y], [toTile.x, toTile.y]);
-    this.pathfinder.calculatePath();
+    this.game.pathfinder.setCallbackFunction (onPathReadyCallback);
+    this.game.pathfinder.preparePathCalculation ([fromTile.x, fromTile.y], [toTile.x, toTile.y]);
+    this.game.pathfinder.calculatePath();
   }
 
-  // En fonction du layer (récupérer le walkable layer)
   getTile (x, y, isCoordinate = false) {
-    let m = isCoordinate ? Parameters.world.tile.size : 1;
+    let m = isCoordinate ? this.tilesize : 1;
     return {
       x: this.walkableLayer.getTileX(x) * m,
       y: this.walkableLayer.getTileY(y) * m
@@ -137,8 +155,37 @@ export default class {
     return object;
   }
 
-  add (object, layer) {
-    // Choix de la couche sous laquel l'objet va être ajouté
-    this.game.world.addAt(object, this.layers[layer].index);
+  add (object) {
+    this.groupCharacters.add(object);
+  }
+
+  setScale (value) {
+    console.log(this.game.world.width, this.game.camera.width, this.game.stage.width, this.groupLayers.width);
+
+    this.scale = value;
+    this.groupLayers.scale.setTo(value);
+    this.groupCharacters.scale.setTo(value);
+
+    console.log(this.game.world.width, this.game.camera.width, this.game.stage.width, this.groupLayers.width);
+
+    this.game.world.setBounds(0, 0, this.groupLayers.width, this.game.stage.width, this.groupLayers.height);
+    //this.game.world.setBounds(0, 0, this.layer.widthInPixels * this.scale.x, this.layer.heightInPixels * this.scale.y);
+
+    console.log(this.game.world.width, this.game.camera.width, this.game.stage.width, this.groupLayers.width);
+
+    this.game.camera.setSize(this.groupLayers.width, this.groupLayers.height);
+    this.game.camera.setBoundsToWorld();
+
+    //this.game.stage.worldScale.setTo(value);
+    this.game.stage.scale.setTo(value);
+    //this.game.stage.width = this.groupLayers.width;
+    //this.game.stage.height = this.groupLayers.height;
+
+    this.groupLayers.update();
+    this.game.world.update();
+    this.game.camera.update();
+    this.game.stage.update();
+
+    console.log(this.game.world.width, this.game.camera.width, this.game.stage.width, this.groupLayers.width);
   }
 }

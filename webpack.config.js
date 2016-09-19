@@ -30,7 +30,8 @@ module.exports = {
       'pixi': pixi,
       'p2': p2,
       'easystar': path.join(__dirname, '/node_modules/easystarjs/src/easystar.js'),
-      'easystar_phaser': path.join(__dirname, '/node_modules/phaser_plugin_pathfinding/bin/phaser_pathfinding-0.2.0.min.js')
+      'phaser_easystar': path.join(__dirname, '/node_modules/phaser_plugin_pathfinding/bin/phaser_pathfinding-0.2.0.min.js'),
+      'phaser_kinecticscrolling': path.join(__dirname, '/node_modules/phaser-kinetic-scrolling-plugin/dist/phaser-kinetic-scrolling-plugin.min.js'),
     }
   },
   watch: dev,

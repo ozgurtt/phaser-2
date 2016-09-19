@@ -42,7 +42,7 @@ export default class extends State {
   progress (progress, cacheKey, success, totalLoaded, totalFiles) {
     this.textLoading.text = i18next.t('Loading', {percent: progress});
     
-    console.log(`-- LOADING : File '${cacheKey}' Complete: ${progress}% - ${totalLoaded} / ${totalFiles} --`);
+    //console.log(`-- LOADING : File '${cacheKey}' Complete: ${progress}% - ${totalLoaded} / ${totalFiles} --`);
   }
 
   loaded () {

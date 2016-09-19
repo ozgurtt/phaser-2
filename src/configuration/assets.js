@@ -1,9 +1,9 @@
 export let Assets = {
-  font: {
+  font: false/*{
     google: {
       families: ['Roboto']
     }
-  },
+  }*/,
   tilemaps: {
     world: {
       map: 'assets/tilemap/map.json',

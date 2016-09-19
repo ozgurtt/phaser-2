@@ -3,15 +3,17 @@ import Sprite from '../phaser/Sprite';
 import { Parameters } from '../configuration/parameters'
 
 export default class extends Sprite {
-  constructor (game, level, {layer, x, y, asset, isCollisionEnabled = true, speed = 60}) {
-    super(game, {x: x * Parameters.world.tile.size, y: y * Parameters.world.tile.size, asset});
+  constructor (game, level, {x, y, asset, isCollisionEnabled = true, speed = 60}) {
+    super(game, {x: x * level.tilesize, y: y * level.tilesize, asset});
     this.game = game;
     this.level = level;
-    if(layer) this.level.add (this, layer);
+    this.level.add(this);
 
     this.setSpeed(speed);
 
     this.currentTweens = [];
+    this.currentTween = null;
+    this.currentIndex = 1,
     this.moving = false;
     this.tweenInProgress = false;
 
@@ -19,10 +21,6 @@ export default class extends Sprite {
       this.game.physics.enable(this);
       this.body.fixedRotation = true;
     }
-  }
-
-  initPhysics () {
-    this.game.physics.enable(this, Phaser.Physics.ARCADE);
   }
 
   initCollisions () {
@@ -108,8 +106,8 @@ export default class extends Sprite {
   getTweenToCoordinate (x, y) {
     var tween = this.game.add.tween(this.position);
 
-    x = x * Parameters.world.tile.size;
-    y = y * Parameters.world.tile.size;
+    x = x * this.level.tilesize;
+    y = y * this.level.tilesize;
     tween.to({ x:x, y:y }, this.moveDuration);
 
     return tween;
@@ -118,13 +116,15 @@ export default class extends Sprite {
   moveInPath (pathEndedCallback = () => {}) {
     if(this.currentTweens.length === 0){ return; }
 
-    let index = 1;
+    this.currentIndex = 1;
     let direction;
     this.moving = true;
 
     let moveToNext = (tween) => {
-      index ++;
-      var nextTween = this.currentTweens[index];
+      this.currentIndex ++;
+      this.currentTween = tween;
+
+      var nextTween = this.currentTweens[this.currentIndex];
 
       if(nextTween != null){
         tween.onComplete.add(() => {
@@ -148,7 +148,7 @@ export default class extends Sprite {
       this.tweenInProgress = true;
     }
 
-    moveToNext(this.currentTweens[index]);
+    moveToNext(this.currentTweens[this.currentIndex]);
   }
 
   getTweenDirection (tween) {

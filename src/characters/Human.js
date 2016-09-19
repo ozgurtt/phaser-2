@@ -2,8 +2,8 @@ import Character from '../models/Character'
 
 export default class extends Character {
 
-  constructor (game, level, {layer, x, y}) {
-    super(game, level, {layer:layer, x:x, y:y, asset:'character-human'});
+  constructor (game, level, {x, y}) {
+    super(game, level, {x:x, y:y, asset:'character-human'});
 
     this.scale.setTo(2);
     this.anchor.setTo(-0.5);

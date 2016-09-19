@@ -1,12 +1,13 @@
 export let Levels = {
   map: {
+    tilesize: 128,
     tilemap : 'world-map',
     tilesets: [
       {name: 'walkable', asset: 'tilesheet-walkable'},
       {name: 'top', asset: 'tilesheet-top'},
       {name: 'exa', asset: 'tilesheet-exa'}
     ],
-    layers: ['ground', 'floor0', 'floor1', 'walkable'],
+    layers: ['water', 'ground', 'floor0', 'floor1', 'walkable'],
     walkableLayer: 'walkable',
     walkableTiles: [1],
     collisions: {

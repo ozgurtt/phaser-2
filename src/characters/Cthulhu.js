@@ -2,8 +2,8 @@ import Character from '../models/Character'
 
 export default class extends Character {
 
-  constructor (game, level, {layer, x, y}) {
-    super(game, level, {layer:layer, x:x, y:y, asset:'character-cthulhu'});
+  constructor (game, level, {x, y}) {
+    super(game, level, {x:x, y:y, asset:'character-cthulhu'});
 
     this.setupAnimations({
       stop_up: ['stop_up'],
